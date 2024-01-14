@@ -12,9 +12,13 @@ export const HomePage = () => {
 
   return (
     <>
-      <h1>The Code Oven</h1>
-      <MenuList menuItems={foodMenu} onAddMenuItem={addToCart}></MenuList>
-      <Cart cartItems={cartItems}></Cart>
+      <h1 className="text-3xl">The Code Oven</h1>
+      <div className="p-4 flex space-x-10">
+        <MenuList menuItems={foodMenu} onAddMenuItem={addToCart}></MenuList>
+        <div className="border border-black p-10">
+          <Cart cartItems={cartItems}></Cart>
+        </div>
+      </div>
     </>
   );
 };
