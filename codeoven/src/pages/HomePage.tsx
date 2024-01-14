@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { foodMenu } from "../data/MenuItems";
 import { MenuList } from "../components/MenuList";
+import { Cart } from "../components/Cart";
 
 export const HomePage = () => {
   const [cartItems, setCart] = useState<string[]>([]);
@@ -13,14 +14,7 @@ export const HomePage = () => {
     <>
       <h1>The Code Oven</h1>
       <MenuList menuItems={foodMenu} onAddMenuItem={addToCart}></MenuList>
-      <div data-testid="cart">
-        <ul>
-          {cartItems.map((cartItem) => (
-            <li key={cartItem}>{cartItem}</li>
-          ))}
-        </ul>
-        <button disabled={cartItems.length === 0}>Place Order</button>
-      </div>
+      <Cart cartItems={cartItems}></Cart>
     </>
   );
 };
