@@ -1,7 +1,9 @@
+/* eslint-disable testing-library/no-unnecessary-act */
 import { render, screen, within } from "@testing-library/react";
 import { HomePage } from "./HomePage";
 import { foodMenu } from "../data/MenuItems";
 import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 
 describe("Home Page", () => {
   it("Renders the heading", () => {
@@ -19,8 +21,8 @@ describe("Home Page", () => {
     expect(menuItems.length).toEqual(foodMenu.length);
 
     // eslint-disable-next-line array-callback-return
-    foodMenu.map((p, i) => {
-      expect(within(menuItems[i]).getByText(p)).toBeInTheDocument();
+    foodMenu.map((item, index) => {
+      expect(within(menuItems[index]).getByText(item)).toBeInTheDocument();
     });
   });
 
@@ -43,22 +45,25 @@ describe("Home Page", () => {
     const menuItems = within(menuList).getAllByRole("listitem");
 
     // eslint-disable-next-line array-callback-return
-    menuItems.map((i) => {
-      var addToCartButton = within(i).getByRole("button");
+    menuItems.map((item) => {
+      var addToCartButton = within(item).getByRole("button");
       expect(addToCartButton).toBeInTheDocument();
       expect(addToCartButton).toHaveTextContent("Add to Order");
     });
   });
 
   it("Adds a menu item to the cart", async () => {
-    const user = userEvent.setup();
     render(<HomePage></HomePage>);
 
     const menuList = screen.getByTestId("menuList");
     const menuItems = within(menuList).getAllByRole("listitem");
     const addToCartButton = within(menuItems[0]).getByRole("button");
 
-    await user.click(addToCartButton);
+    await act(async () => {
+      await userEvent.click(addToCartButton);
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     const cart = screen.getByTestId("cart");
     expect(within(cart).getByText(foodMenu[0])).toBeInTheDocument();

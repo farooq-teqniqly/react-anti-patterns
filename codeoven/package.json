@@ -22,8 +22,7 @@
     "start": "npm run format && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "clean": "rimraf node_modules && rimraf package-lock.json"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
