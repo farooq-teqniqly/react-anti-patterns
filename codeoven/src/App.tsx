@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 
 export const App = () => {
   return (
-    <div>
-      <div>
+    <div className="container mx-auto">
+      <div className="flex flex-col items-center justify-center">
         <Outlet></Outlet>
       </div>
     </div>
