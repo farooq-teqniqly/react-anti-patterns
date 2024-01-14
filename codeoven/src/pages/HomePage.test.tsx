@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { HomePage } from "./HomePage";
-import { foodMenu } from "../MenuItems";
+import { foodMenu } from "../data/MenuItems";
 
 describe("Home Page", () => {
   it("Renders the heading", () => {

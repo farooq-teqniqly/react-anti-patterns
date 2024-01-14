@@ -1,4 +1,4 @@
-import { foodMenu } from "../MenuItems";
+import { foodMenu } from "../data/MenuItems";
 
 export const HomePage = () => {
   return (
