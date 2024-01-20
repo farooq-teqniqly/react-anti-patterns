@@ -32,16 +32,17 @@ const HomePage = () => {
       });
   };
   return (
-    <div>
-      <h1>Weather App</h1>
+    <div className="flex flex-col">
+      <h1 className="text-2xl text-bol pb-4">Weather App</h1>
       <input
         type="text"
         data-testid="search-input"
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        className="border border-black pl-2 h-12 mb-4"
       />
       {showWelcomeMessage && (
-        <h2 data-testid="welcome-message">
+        <h2 data-testid="welcome-message" className="pt-4">
           Welcome to Weather App! Start by searching for a city.
         </h2>
       )}
@@ -50,9 +51,13 @@ const HomePage = () => {
         <h2 data-testid="no-search-results-message">Sorry, but we could not find that city.</h2>
       )}
       {searchResults.length > 0 && (
-        <ul>
+        <ul className="">
           {searchResults.map((r, index) => (
-            <li key={index} data-testid="search-results">
+            <li
+              key={index}
+              data-testid="search-results"
+              className="border border-gray-500 text-lg text-left pl-2 hover:bg-gray-100"
+            >
               {r.name}, {r.country}, {r.state}
             </li>
           ))}
