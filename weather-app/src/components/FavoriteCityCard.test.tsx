@@ -8,6 +8,8 @@ describe("FavoriteCityCard component", () => {
       name: "Seattle",
       country: "US",
       state: "Washington",
+      lat: 100.4747,
+      long: 10.111,
     };
     render(<FavoriteCityCard city={city}></FavoriteCityCard>);
     expect(screen.getByText(`${city.state!}, ${city.country}`)).toBeInTheDocument();
@@ -17,6 +19,8 @@ describe("FavoriteCityCard component", () => {
     const city: FavoriteCity = {
       name: "Dublin",
       country: "IE",
+      lat: 100.4747,
+      long: 10.111,
     };
     render(<FavoriteCityCard city={city}></FavoriteCityCard>);
 
@@ -29,6 +33,8 @@ describe("FavoriteCityCard component", () => {
       name: "Seattle",
       country: "US",
       state: "Washington",
+      lat: 100.4747,
+      long: 10.111,
       weather: {
         temp: 48,
       },

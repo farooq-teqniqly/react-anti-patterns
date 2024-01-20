@@ -7,6 +7,8 @@ describe("SearchResultCard component", () => {
     const searchResult: AppSearchResult = {
       city: "Dublin",
       country: "IE",
+      lat: 10.123,
+      long: 9.888,
     };
 
     render(<SearchResultCard searchResult={searchResult}></SearchResultCard>);

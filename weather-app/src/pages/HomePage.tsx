@@ -32,9 +32,6 @@ const HomePage = () => {
   };
 
   const addFavoriteCity = (searchResult: AppSearchResult) => {
-    console.log(
-      `Favorite icon clicked for ${searchResult.city}, ${searchResult.state}, ${searchResult.country}`,
-    );
     setFavoriteCities((prevFaves) => [
       ...prevFaves,
       mapAppSearchResultToFavoriteCity(searchResult),
