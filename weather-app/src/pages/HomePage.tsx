@@ -1,5 +1,6 @@
 import { ChangeEvent, useState, KeyboardEvent } from "react";
 import { SearchResult } from "../types/types";
+import SearchResultCard from "../components/SearchResultCard";
 
 const getSearchEnpoint = (city: string): string => {
   return `https://api.openweathermap.org/geo/1.0/direct?q='${city}'&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
@@ -9,11 +10,6 @@ const HomePage = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showNoSearchResultsMessage, setShowNoSearchResultsMessage] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
-
-  const formatSearchResult = (searchResult: SearchResult): string => {
-    const segments = [searchResult.name, searchResult.country, searchResult.state].filter(Boolean);
-    return segments.join(", ");
-  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchCity(e.target.value);
@@ -58,13 +54,7 @@ const HomePage = () => {
       {searchResults.length > 0 && (
         <ul className="">
           {searchResults.map((r, index) => (
-            <li
-              key={index}
-              data-testid="search-results"
-              className="border border-gray-500 text-lg text-left pl-2 hover:bg-gray-100"
-            >
-              {formatSearchResult(r)}
-            </li>
+            <SearchResultCard searchResult={r} index={index}></SearchResultCard>
           ))}
         </ul>
       )}
