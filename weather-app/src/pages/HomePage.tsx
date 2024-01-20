@@ -1,5 +1,11 @@
 import { ChangeEvent, useState, KeyboardEvent } from "react";
-import { AppSearchResult, RemoteSearchResult, mapRemoteSearchResults } from "../types/types";
+import {
+  AppSearchResult,
+  RemoteSearchResult,
+  FavoriteCity,
+  mapRemoteSearchResults,
+  mapAppSearchResultToFavoriteCity,
+} from "../types/types";
 import SearchResultCard from "../components/SearchResultCard";
 
 const getSearchEnpoint = (city: string): string => {
@@ -10,6 +16,7 @@ const HomePage = () => {
   const [searchResults, setSearchResults] = useState<AppSearchResult[]>([]);
   const [showNoSearchResultsMessage, setShowNoSearchResultsMessage] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
+  const [favoriteCities, setFavoriteCities] = useState<FavoriteCity[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchCity(e.target.value);
@@ -23,8 +30,14 @@ const HomePage = () => {
     fetchSearchResults();
   };
 
-  const handleClick = () => {
-    console.log("Favorite icon clicked.");
+  const addFavoriteCity = (searchResult: AppSearchResult) => {
+    console.log(
+      `Favorite icon clicked for ${searchResult.city}, ${searchResult.state}, ${searchResult.country}`,
+    );
+    setFavoriteCities((prevFaves) => [
+      ...prevFaves,
+      mapAppSearchResultToFavoriteCity(searchResult),
+    ]);
   };
 
   const fetchSearchResults = () => {
@@ -61,11 +74,26 @@ const HomePage = () => {
             <SearchResultCard
               key={index}
               searchResult={r}
-              handleClick={handleClick}
+              onItemClick={addFavoriteCity}
             ></SearchResultCard>
           ))}
         </ul>
       )}
+      <div className="flex">
+        {favoriteCities.length > 0 && (
+          <ul>
+            {favoriteCities.map((f, index) => (
+              <li
+                className="border border-gray-100 bg-black text-white"
+                data-testid="favorite-city"
+                key={index}
+              >
+                {f.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

@@ -91,5 +91,6 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type("{enter}");
 
     cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.get('[data-testid="favorite-city"]').should("have.length", 1);
   });
 });

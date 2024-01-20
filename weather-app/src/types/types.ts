@@ -19,3 +19,17 @@ export const mapRemoteSearchResults = (results: RemoteSearchResult[]): AppSearch
     };
   });
 };
+
+export type FavoriteCity = {
+  name: string;
+  country: string;
+  state?: string | undefined;
+};
+
+export const mapAppSearchResultToFavoriteCity = (results: AppSearchResult): FavoriteCity => {
+  return {
+    name: results.city,
+    country: results.country,
+    state: results.state,
+  };
+};
