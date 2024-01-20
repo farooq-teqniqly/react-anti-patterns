@@ -16,6 +16,7 @@ const FavoriteCityCard = ({ city }: Props) => {
       <div className="text-sm">
         <p> {formatFavoriteCity(city)}</p>
       </div>
+      <div>{city.weather?.temp}</div>
     </li>
   );
 };

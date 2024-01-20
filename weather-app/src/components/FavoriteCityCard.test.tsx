@@ -23,4 +23,18 @@ describe("FavoriteCityCard component", () => {
     expect(screen.getByText(city.name)).toBeInTheDocument();
     expect(screen.getByText(city.country)).toBeInTheDocument();
   });
+
+  it("Renders the weather", () => {
+    const city: FavoriteCity = {
+      name: "Seattle",
+      country: "US",
+      state: "Washington",
+      weather: {
+        temp: 48,
+      },
+    };
+    render(<FavoriteCityCard city={city}></FavoriteCityCard>);
+
+    expect(screen.getByText(new RegExp(`\\b${city.weather?.temp}\\b`))).toBeInTheDocument();
+  });
 });

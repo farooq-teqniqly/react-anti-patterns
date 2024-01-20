@@ -20,10 +20,15 @@ export const mapRemoteSearchResults = (results: RemoteSearchResult[]): AppSearch
   });
 };
 
+export type Weather = {
+  temp: number;
+};
+
 export type FavoriteCity = {
   name: string;
   country: string;
   state?: string | undefined;
+  weather?: Weather;
 };
 
 export const mapAppSearchResultToFavoriteCity = (results: AppSearchResult): FavoriteCity => {
