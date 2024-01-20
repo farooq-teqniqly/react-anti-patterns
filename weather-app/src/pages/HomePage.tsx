@@ -10,6 +10,11 @@ const HomePage = () => {
   const [showNoSearchResultsMessage, setShowNoSearchResultsMessage] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
 
+  const formatSearchResult = (searchResult: SearchResult): string => {
+    const segments = [searchResult.name, searchResult.country, searchResult.state].filter(Boolean);
+    return segments.join(", ");
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchCity(e.target.value);
   };
@@ -58,7 +63,7 @@ const HomePage = () => {
               data-testid="search-results"
               className="border border-gray-500 text-lg text-left pl-2 hover:bg-gray-100"
             >
-              {r.name}, {r.country}, {r.state}
+              {formatSearchResult(r)}
             </li>
           ))}
         </ul>
