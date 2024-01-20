@@ -7,6 +7,7 @@ import {
   mapAppSearchResultToFavoriteCity,
 } from "../types/types";
 import SearchResultCard from "../components/SearchResultCard";
+import FavoriteCityCard from "../components/FavoriteCityCard";
 
 const getSearchEnpoint = (city: string): string => {
   return `https://api.openweathermap.org/geo/1.0/direct?q='${city}'&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
@@ -82,14 +83,8 @@ const HomePage = () => {
       <div className="flex">
         {favoriteCities.length > 0 && (
           <ul>
-            {favoriteCities.map((f, index) => (
-              <li
-                className="border border-gray-100 bg-black text-white"
-                data-testid="favorite-city"
-                key={index}
-              >
-                {f.name}
-              </li>
+            {favoriteCities.map((city, index) => (
+              <FavoriteCityCard city={city}></FavoriteCityCard>
             ))}
           </ul>
         )}
