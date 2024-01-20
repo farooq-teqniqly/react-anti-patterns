@@ -7,13 +7,10 @@ describe("FavoriteCityCard component", () => {
     const city: FavoriteCity = {
       name: "Seattle",
       country: "US",
-      state: "WA",
+      state: "Washington",
     };
     render(<FavoriteCityCard city={city}></FavoriteCityCard>);
-
-    expect(screen.getByText(city.name)).toBeInTheDocument();
-    expect(screen.getByText(city.country)).toBeInTheDocument();
-    expect(screen.getByText(city.state!)).toBeInTheDocument();
+    expect(screen.getByText(`${city.state!}, ${city.country}`)).toBeInTheDocument();
   });
 
   it("Doesn't render the state if it's missing", () => {

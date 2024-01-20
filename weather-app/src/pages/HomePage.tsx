@@ -80,11 +80,11 @@ const HomePage = () => {
           ))}
         </ul>
       )}
-      <div className="flex">
+      <div className="flex pt-4">
         {favoriteCities.length > 0 && (
           <ul>
             {favoriteCities.map((city, index) => (
-              <FavoriteCityCard city={city}></FavoriteCityCard>
+              <FavoriteCityCard key={index} city={city}></FavoriteCityCard>
             ))}
           </ul>
         )}

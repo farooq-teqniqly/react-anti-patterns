@@ -78,7 +78,7 @@ describe("Weather app", () => {
     cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
 
-  it("Can favorite a city", () => {
+  it("Can favorite a cities", () => {
     const searchCity = "Seattle";
 
     intercept("GEO", {
@@ -90,7 +90,10 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
-    cy.get('[data-testid="favorite-city"]').should("have.length", 1);
+    searchResults.forEach((r, index) => {
+      cy.get('[data-testid="add-favorite"]').eq(index).click();
+    });
+
+    cy.get('[data-testid="favorite-city"]').should("have.length", 3);
   });
 });

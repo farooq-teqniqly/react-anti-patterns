@@ -4,12 +4,18 @@ type Props = {
   city: FavoriteCity;
 };
 
+const formatFavoriteCity = (city: FavoriteCity): string => {
+  const segments = [city.state, city.country].filter(Boolean);
+  return segments.join(", ");
+};
+
 const FavoriteCityCard = ({ city }: Props) => {
   return (
-    <li className="border border-gray-100 bg-black text-white" data-testid="favorite-city">
+    <li className="border border-gray-100 bg-black text-white p-4 mb-4" data-testid="favorite-city">
       <p>{city.name}</p>
-      <p> {city.country}</p>
-      <p> {city.state}</p>
+      <div className="text-sm">
+        <p> {formatFavoriteCity(city)}</p>
+      </div>
     </li>
   );
 };
