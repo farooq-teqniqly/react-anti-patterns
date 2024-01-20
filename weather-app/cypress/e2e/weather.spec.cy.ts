@@ -21,14 +21,55 @@ describe("Weather app", () => {
     cy.contains("Weather App");
   });
 
+  it("Displays a welcome message on initial load", () => {
+    cy.visit(localAppUrl);
+    cy.contains("Welcome to Weather App! Start by searching for a city.");
+  });
+
+  it("Does not show the no search results found message on initial load", () => {
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="no-search-results-message"]').should("not.exist");
+  });
+
   it("Searches for a city", () => {
+    const searchCity = "Seattle";
+
     intercept("GEO", {
       statusCode: 200,
       body: searchResults,
     });
+
     cy.visit(localAppUrl);
-    cy.get('[data-testid="search-input"]').type("Seattle");
+    cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="search-results"]').should("have.length", 3);
+  });
+
+  it("Displays a not found message when the city isn't found", () => {
+    const searchCity = "Balhblahblah";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: [],
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.contains("Sorry, but we could not find that city.");
+  });
+
+  it("Does not show the welcome message after a search is performed", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: searchResults,
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
 });
