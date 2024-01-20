@@ -32,6 +32,14 @@ const HomePage = () => {
   };
 
   const addFavoriteCity = (searchResult: AppSearchResult) => {
+    const isDupe = favoriteCities.some(
+      (city) => city.lat === searchResult.lat && city.long === searchResult.long,
+    );
+
+    if (isDupe) {
+      return;
+    }
+
     setFavoriteCities((prevFaves) => [
       ...prevFaves,
       mapAppSearchResultToFavoriteCity(searchResult),

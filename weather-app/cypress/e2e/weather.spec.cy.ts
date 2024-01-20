@@ -78,7 +78,7 @@ describe("Weather app", () => {
     cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
 
-  it("Can favorite a cities", () => {
+  it("Can favorite multiple cities", () => {
     const searchCity = "Seattle";
 
     intercept("GEO", {
@@ -95,5 +95,23 @@ describe("Weather app", () => {
     });
 
     cy.get('[data-testid="favorite-city"]').should("have.length", 3);
+  });
+
+  it("Does not allow favoriting of the same city twice", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: searchResults,
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+
+    cy.get('[data-testid="favorite-city"]').should("have.length", 1);
   });
 });
