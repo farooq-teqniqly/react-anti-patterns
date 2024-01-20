@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, KeyboardEvent } from "react";
-import { RemoteSearchResult } from "../types/types";
+import { AppSearchResult, RemoteSearchResult, mapRemoteSearchResults } from "../types/types";
 import SearchResultCard from "../components/SearchResultCard";
 
 const getSearchEnpoint = (city: string): string => {
@@ -7,7 +7,7 @@ const getSearchEnpoint = (city: string): string => {
 };
 const HomePage = () => {
   const [searchCity, setSearchCity] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<RemoteSearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<AppSearchResult[]>([]);
   const [showNoSearchResultsMessage, setShowNoSearchResultsMessage] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
 
@@ -27,7 +27,7 @@ const HomePage = () => {
     fetch(getSearchEnpoint(searchCity))
       .then((res) => res.json())
       .then((cities: RemoteSearchResult[]) => {
-        setSearchResults(cities);
+        setSearchResults(mapRemoteSearchResults(cities));
         setShowNoSearchResultsMessage(cities.length === 0);
         setShowWelcomeMessage(false);
       });

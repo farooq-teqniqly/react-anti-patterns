@@ -1,12 +1,12 @@
-import { RemoteSearchResult } from "../types/types";
+import { AppSearchResult } from "../types/types";
 
 type Props = {
-  searchResult: RemoteSearchResult;
+  searchResult: AppSearchResult;
   index: number;
 };
 
-const formatSearchResult = (searchResult: RemoteSearchResult): string => {
-  const segments = [searchResult.name, searchResult.country, searchResult.state].filter(Boolean);
+const formatSearchResult = (searchResult: AppSearchResult): string => {
+  const segments = [searchResult.city, searchResult.country, searchResult.state].filter(Boolean);
   return segments.join(", ");
 };
 
