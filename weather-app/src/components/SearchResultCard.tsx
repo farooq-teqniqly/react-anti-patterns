@@ -1,9 +1,10 @@
 import { AppSearchResult } from "../types/types";
-import AddFavorite from "./AddFavorite";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 type Props = {
   searchResult: AppSearchResult;
-  index: number;
+  handleClick?: () => void;
 };
 
 const formatSearchResult = (searchResult: AppSearchResult): string => {
@@ -11,14 +12,18 @@ const formatSearchResult = (searchResult: AppSearchResult): string => {
   return segments.join(", ");
 };
 
-const SearchResultCard = ({ searchResult, index }: Props) => {
-  const handleClick = () => {};
+const SearchResultCard = ({ searchResult, handleClick }: Props) => {
   return (
     <div className="relative flex border border-gray-500 justify-between items-center hover:bg-gray-100 cursor-pointer">
-      <li key={index} data-testid="search-results" className="text-lg text-left pl-">
+      <li data-testid="search-results" className="text-lg text-left pl-">
         {formatSearchResult(searchResult)}
       </li>
-      <AddFavorite onClick={handleClick}></AddFavorite>
+      <FontAwesomeIcon
+        data-testid="add-favorite"
+        icon={faStar}
+        className="pr-4"
+        onClick={handleClick}
+      ></FontAwesomeIcon>
     </div>
   );
 };

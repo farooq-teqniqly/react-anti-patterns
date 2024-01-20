@@ -23,6 +23,10 @@ const HomePage = () => {
     fetchSearchResults();
   };
 
+  const handleClick = () => {
+    console.log("Favorite icon clicked.");
+  };
+
   const fetchSearchResults = () => {
     fetch(getSearchEnpoint(searchCity))
       .then((res) => res.json())
@@ -54,7 +58,11 @@ const HomePage = () => {
       {searchResults.length > 0 && (
         <ul className="">
           {searchResults.map((r, index) => (
-            <SearchResultCard searchResult={r} index={index}></SearchResultCard>
+            <SearchResultCard
+              key={index}
+              searchResult={r}
+              handleClick={handleClick}
+            ></SearchResultCard>
           ))}
         </ul>
       )}

@@ -77,4 +77,19 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
+
+  it("Can favorite a city", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: searchResults,
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+  });
 });

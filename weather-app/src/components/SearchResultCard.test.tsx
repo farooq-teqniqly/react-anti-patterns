@@ -9,7 +9,7 @@ describe("SearchResultCard component", () => {
       country: "IE",
     };
 
-    render(<SearchResultCard searchResult={searchResult} index={0}></SearchResultCard>);
+    render(<SearchResultCard searchResult={searchResult}></SearchResultCard>);
     expect(screen.getByText("Dublin, IE")).toBeInTheDocument();
   });
 });
