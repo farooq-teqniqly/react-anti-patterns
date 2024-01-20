@@ -32,7 +32,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rimraf node_modules && rimraf package-lock.json",
-    "e2e": "cypress run --no-exit"
+    "e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": [
