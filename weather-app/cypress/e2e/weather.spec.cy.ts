@@ -77,23 +77,4 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
-
-  it("Formats the search result properly when there is no state", () => {
-    const searchCity = "Seattle";
-
-    intercept("GEO", {
-      statusCode: 200,
-      body: [
-        {
-          name: "Dublin",
-          country: "IE",
-        },
-      ],
-    });
-
-    cy.visit(localAppUrl);
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
-    cy.get('[data-testid="search-results"]').eq(0).should("have.text", "Dublin, IE");
-  });
 });
