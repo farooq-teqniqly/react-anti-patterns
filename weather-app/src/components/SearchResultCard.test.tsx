@@ -1,10 +1,10 @@
 import SearchResultCard from "./SearchResultCard";
-import { SearchResult } from "../types/types";
+import { RemoteSearchResult } from "../types/types";
 import { render, screen } from "@testing-library/react";
 
 describe("SearchResultCard component", () => {
   it("Does not render the state if there isn't any", () => {
-    const searchResult: SearchResult = {
+    const searchResult: RemoteSearchResult = {
       name: "Dublin",
       country: "IE",
     };

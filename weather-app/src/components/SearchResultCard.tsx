@@ -1,11 +1,11 @@
-import { SearchResult } from "../types/types";
+import { RemoteSearchResult } from "../types/types";
 
 type Props = {
-  searchResult: SearchResult;
+  searchResult: RemoteSearchResult;
   index: number;
 };
 
-const formatSearchResult = (searchResult: SearchResult): string => {
+const formatSearchResult = (searchResult: RemoteSearchResult): string => {
   const segments = [searchResult.name, searchResult.country, searchResult.state].filter(Boolean);
   return segments.join(", ");
 };

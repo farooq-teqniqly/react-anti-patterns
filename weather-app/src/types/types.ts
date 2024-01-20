@@ -1,4 +1,4 @@
-export type SearchResult = {
+export type RemoteSearchResult = {
   name: string;
   country: string;
   state?: string | undefined;
