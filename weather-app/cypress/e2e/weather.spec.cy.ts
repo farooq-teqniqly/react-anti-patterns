@@ -31,7 +31,7 @@ describe("Weather app", () => {
     cy.get('[data-testid="no-search-results-message"]').should("not.exist");
   });
 
-  it("Searches for a city", () => {
+  it("Displays search results", () => {
     const searchCity = "Seattle";
 
     intercept("GEO", {
@@ -42,7 +42,12 @@ describe("Weather app", () => {
     cy.visit(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
-    cy.get('[data-testid="search-results"]').should("have.length", 3);
+
+    searchResults.forEach((r, index) => {
+      cy.get('[data-testid="search-results"]')
+        .eq(index)
+        .should("have.text", `${r.name}, ${r.country}, ${r.state}`);
+    });
   });
 
   it("Displays a not found message when the city isn't found", () => {
@@ -71,5 +76,24 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="welcome-message"]').should("not.exist");
+  });
+
+  it("Formats the search result properly when there is no state", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: [
+        {
+          name: "Dublin",
+          country: "IE",
+        },
+      ],
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.get('[data-testid="search-results"]').eq(0).should("have.text", "Dublin, IE");
   });
 });
