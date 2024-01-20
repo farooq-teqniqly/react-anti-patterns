@@ -1,4 +1,6 @@
 import { AppSearchResult } from "../types/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 type Props = {
   searchResult: AppSearchResult;
@@ -12,13 +14,12 @@ const formatSearchResult = (searchResult: AppSearchResult): string => {
 
 const SearchResultCard = ({ searchResult, index }: Props) => {
   return (
-    <li
-      key={index}
-      data-testid="search-results"
-      className="border border-gray-500 text-lg text-left pl-2 hover:bg-gray-100"
-    >
-      {formatSearchResult(searchResult)}
-    </li>
+    <div className="relative flex border border-gray-500 justify-between items-center hover:bg-gray-100 cursor-pointer">
+      <li key={index} data-testid="search-results" className="text-lg text-left pl-">
+        {formatSearchResult(searchResult)}
+      </li>
+      <FontAwesomeIcon icon={faStar} className="pr-4"></FontAwesomeIcon>
+    </div>
   );
 };
 
