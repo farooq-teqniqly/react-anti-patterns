@@ -27,16 +27,13 @@ const HomePage = () => {
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
   const [favoriteCities, setFavoriteCities] = useState<FavoriteCity[]>([]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchCity(e.target.value);
-  };
+  const fetchSearchResults = async () => {
+    const response = await fetch(getSearchEndpoint(searchCity));
+    const cities: RemoteSearchResult[] = await response.json();
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") {
-      return;
-    }
-
-    fetchSearchResults();
+    setSearchResults(mapRemoteSearchResults(cities));
+    setShowNoSearchResultsMessage(cities.length === 0);
+    setShowWelcomeMessage(false);
   };
 
   const fetchWeather = async (city: FavoriteCity): Promise<Weather> => {
@@ -62,14 +59,16 @@ const HomePage = () => {
     });
   };
 
-  const fetchSearchResults = () => {
-    fetch(getSearchEndpoint(searchCity))
-      .then((res) => res.json())
-      .then((cities: RemoteSearchResult[]) => {
-        setSearchResults(mapRemoteSearchResults(cities));
-        setShowNoSearchResultsMessage(cities.length === 0);
-        setShowWelcomeMessage(false);
-      });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchCity(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") {
+      return;
+    }
+
+    fetchSearchResults();
   };
 
   return (
