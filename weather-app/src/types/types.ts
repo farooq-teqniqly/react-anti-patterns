@@ -3,7 +3,7 @@ export type RemoteSearchResult = {
   country: string;
   state?: string | undefined;
   lat: number;
-  long: number;
+  lon: number;
 };
 
 export type AppSearchResult = {
@@ -21,13 +21,25 @@ export const mapRemoteSearchResults = (results: RemoteSearchResult[]): AppSearch
       country: r.country,
       state: r.state,
       lat: r.lat,
-      long: r.long,
+      long: r.lon,
     };
   });
 };
 
 export type Weather = {
   temp: number;
+};
+
+export type RemoteWeather = {
+  main: {
+    temp: number;
+  };
+};
+
+export const mapRemoteWeather = (weather: RemoteWeather): Weather => {
+  return {
+    temp: weather.main.temp,
+  };
 };
 
 export type FavoriteCity = {

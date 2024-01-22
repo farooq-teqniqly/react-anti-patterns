@@ -5,13 +5,21 @@ import {
   FavoriteCity,
   mapRemoteSearchResults,
   mapAppSearchResultToFavoriteCity,
+  RemoteWeather,
+  mapRemoteWeather,
+  Weather,
 } from "../types/types";
 import SearchResultCard from "../components/SearchResultCard";
 import FavoriteCityCard from "../components/FavoriteCityCard";
 
-const getSearchEnpoint = (city: string): string => {
+const getSearchEndpoint = (city: string): string => {
   return `https://api.openweathermap.org/geo/1.0/direct?q='${city}'&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
 };
+
+const getWeatherEndpoint = (lat: number, lon: number): string => {
+  return `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
+};
+
 const HomePage = () => {
   const [searchCity, setSearchCity] = useState<string>("");
   const [searchResults, setSearchResults] = useState<AppSearchResult[]>([]);
@@ -31,6 +39,12 @@ const HomePage = () => {
     fetchSearchResults();
   };
 
+  const fetchWeather = async (city: FavoriteCity): Promise<Weather> => {
+    const response = await fetch(getWeatherEndpoint(city.lat, city.long));
+    const remoteWeather: RemoteWeather = await response.json();
+    return mapRemoteWeather(remoteWeather);
+  };
+
   const addFavoriteCity = (searchResult: AppSearchResult) => {
     const isDupe = favoriteCities.some(
       (city) => city.lat === searchResult.lat && city.long === searchResult.long,
@@ -40,14 +54,16 @@ const HomePage = () => {
       return;
     }
 
-    setFavoriteCities((prevFaves) => [
-      ...prevFaves,
-      mapAppSearchResultToFavoriteCity(searchResult),
-    ]);
+    const favoriteCity = mapAppSearchResultToFavoriteCity(searchResult);
+
+    fetchWeather(favoriteCity).then((weather) => {
+      favoriteCity.weather = weather;
+      setFavoriteCities((prevFaves) => [...prevFaves, favoriteCity]);
+    });
   };
 
   const fetchSearchResults = () => {
-    fetch(getSearchEnpoint(searchCity))
+    fetch(getSearchEndpoint(searchCity))
       .then((res) => res.json())
       .then((cities: RemoteSearchResult[]) => {
         setSearchResults(mapRemoteSearchResults(cities));
@@ -55,6 +71,7 @@ const HomePage = () => {
         setShowWelcomeMessage(false);
       });
   };
+
   return (
     <div className="flex flex-col">
       <h1 className="text-2xl text-bol pb-4">Weather App</h1>

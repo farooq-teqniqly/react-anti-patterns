@@ -1,5 +1,6 @@
 import { RouteHandler } from "cypress/types/net-stubbing";
 import searchResults from "../fixtures/search-result.json";
+import weather from "../fixtures/weather.json";
 
 const localAppUrl = "http://localhost:3000";
 
@@ -7,6 +8,10 @@ const interceptMap: { [key: string]: any } = {
   GEO: {
     method: "GET",
     ep: "https://api.openweathermap.org/geo/1.0/direct?q=*",
+  },
+  WEATHER: {
+    method: "GET",
+    ep: "https://api.openweathermap.org/data/2.5/weather*",
   },
 };
 
@@ -113,5 +118,25 @@ describe("Weather app", () => {
     cy.get('[data-testid="add-favorite"]').eq(0).click();
 
     cy.get('[data-testid="favorite-city"]').should("have.length", 1);
+  });
+
+  it("Displays the temperature for a favorite", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: searchResults,
+    });
+
+    intercept("WEATHER", {
+      statusCode: 200,
+      body: weather,
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.contains("48.06");
   });
 });
