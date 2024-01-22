@@ -27,7 +27,7 @@ export const mapRemoteSearchResults = (results: RemoteSearchResult[]): AppSearch
 };
 
 export type Weather = {
-  temp: number;
+  temp: number | string;
 };
 
 export type RemoteWeather = {
@@ -37,6 +37,12 @@ export type RemoteWeather = {
 };
 
 export const mapRemoteWeather = (weather: RemoteWeather): Weather => {
+  if (!weather) {
+    return {
+      temp: "N/A",
+    };
+  }
+
   return {
     temp: weather.main.temp,
   };

@@ -113,9 +113,19 @@ describe("Weather app", () => {
     cy.visit(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
+
+    cy.get('[data-testid="add-favorite"]')
+      .eq(0)
+      .click()
+      .then(() => {
+        return cy.wait(1000);
+      })
+      .then(() => {
+        return cy.get('[data-testid="add-favorite"]').eq(0).click();
+      })
+      .then(() => {
+        return cy.wait(1000);
+      });
 
     cy.get('[data-testid="favorite-city"]').should("have.length", 1);
   });
@@ -138,5 +148,25 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
     cy.contains("48.06");
+  });
+
+  it("Displays N/A for the temp when it can't be retrieved", () => {
+    const searchCity = "Seattle";
+
+    intercept("GEO", {
+      statusCode: 200,
+      body: searchResults,
+    });
+
+    intercept("WEATHER", {
+      statusCode: 200,
+      body: null,
+    });
+
+    cy.visit(localAppUrl);
+    cy.get('[data-testid="search-input"]').type(searchCity);
+    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.contains("N/A");
   });
 });
