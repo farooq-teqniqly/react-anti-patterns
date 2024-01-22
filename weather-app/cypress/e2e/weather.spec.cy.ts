@@ -130,7 +130,7 @@ describe("Weather app", () => {
     cy.get('[data-testid="favorite-city"]').should("have.length", 1);
   });
 
-  it("Displays the temperature for a favorite", () => {
+  it("Displays the rounded temperature for a favorite", () => {
     const searchCity = "Seattle";
 
     intercept("GEO", {
@@ -147,7 +147,7 @@ describe("Weather app", () => {
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
-    cy.contains("48.06");
+    cy.contains(/^48$/);
   });
 
   it("Displays N/A for the temp when it can't be retrieved", () => {

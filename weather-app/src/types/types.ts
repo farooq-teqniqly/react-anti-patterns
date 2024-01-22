@@ -44,7 +44,7 @@ export const mapRemoteWeather = (weather: RemoteWeather): Weather => {
   }
 
   return {
-    temp: weather.main.temp,
+    temp: Math.round(weather.main.temp),
   };
 };
 
