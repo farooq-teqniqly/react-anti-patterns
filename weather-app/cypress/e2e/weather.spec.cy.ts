@@ -91,6 +91,11 @@ describe("Weather app", () => {
       body: searchResults,
     });
 
+    intercept("WEATHER", {
+      statusCode: 200,
+      body: weather,
+    });
+
     cy.visit(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
@@ -108,6 +113,11 @@ describe("Weather app", () => {
     intercept("GEO", {
       statusCode: 200,
       body: searchResults,
+    });
+
+    intercept("WEATHER", {
+      statusCode: 200,
+      body: weather,
     });
 
     cy.visit(localAppUrl);
