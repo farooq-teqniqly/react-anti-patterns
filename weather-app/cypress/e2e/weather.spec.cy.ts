@@ -22,17 +22,17 @@ const intercept = (interceptMapKey: string, response: RouteHandler) => {
 
 describe("Weather app", () => {
   it("Displays the title", () => {
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.contains("Weather App");
   });
 
   it("Displays a welcome message on initial load", () => {
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.contains("Welcome to Weather App! Start by searching for a city.");
   });
 
   it("Does not show the no search results found message on initial load", () => {
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="no-search-results-message"]').should("not.exist");
   });
 
@@ -44,7 +44,7 @@ describe("Weather app", () => {
       body: searchResults,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -63,7 +63,7 @@ describe("Weather app", () => {
       body: [],
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.contains("Sorry, but we could not find that city.");
@@ -77,7 +77,7 @@ describe("Weather app", () => {
       body: searchResults,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="welcome-message"]').should("not.exist");
@@ -96,7 +96,7 @@ describe("Weather app", () => {
       body: weather,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -120,7 +120,7 @@ describe("Weather app", () => {
       body: weather,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -153,7 +153,7 @@ describe("Weather app", () => {
       body: weather,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
@@ -173,7 +173,7 @@ describe("Weather app", () => {
       body: null,
     });
 
-    cy.visit(localAppUrl);
+    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
