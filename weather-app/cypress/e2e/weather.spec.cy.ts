@@ -50,8 +50,7 @@ describe("Weather app", () => {
   it("Displays search results", () => {
     const searchCity = "Seattle";
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
 
     searchResults.forEach((r, index) => {
       cy.get('[data-testid="search-results"]')
@@ -68,24 +67,21 @@ describe("Weather app", () => {
       body: [],
     });
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
     cy.contains("Sorry, but we could not find that city.");
   });
 
   it("Does not show the welcome message after a search is performed", () => {
     const searchCity = "Seattle";
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
     cy.get('[data-testid="welcome-message"]').should("not.exist");
   });
 
   it("Can favorite multiple cities", () => {
     const searchCity = "Seattle";
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
 
     searchResults.forEach((r, index) => {
       cy.get('[data-testid="add-favorite"]').eq(index).click();
@@ -97,8 +93,7 @@ describe("Weather app", () => {
   it("Does not allow favoriting of the same city twice", () => {
     const searchCity = "Seattle";
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
 
     cy.get('[data-testid="add-favorite"]')
       .eq(0)
@@ -119,8 +114,7 @@ describe("Weather app", () => {
   it("Displays the rounded temperature for a favorite", () => {
     const searchCity = "Seattle";
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
     cy.get('[data-testid="add-favorite"]').eq(0).click();
     cy.contains(/^48$/);
   });
@@ -133,8 +127,7 @@ describe("Weather app", () => {
       body: null,
     });
 
-    cy.get('[data-testid="search-input"]').type(searchCity);
-    cy.get('[data-testid="search-input"]').type("{enter}");
+    cy.searchCity(searchCity);
     cy.get('[data-testid="add-favorite"]').eq(0).click();
     cy.contains("N/A");
   });

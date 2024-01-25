@@ -29,12 +29,18 @@ declare global {
   namespace Cypress {
     interface Chainable {
       visitApp(url: string): Chainable<Element>;
+      searchCity(name: string): Chainable<Element>;
     }
   }
 }
 
 Cypress.Commands.add("visitApp", (url) => {
   cy.visit(url);
+});
+
+Cypress.Commands.add("searchCity", (name) => {
+  cy.get('[data-testid="search-input"]').type(name);
+  cy.get('[data-testid="search-input"]').type("{enter}");
 });
 
 export {};
