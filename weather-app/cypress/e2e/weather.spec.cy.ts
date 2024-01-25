@@ -21,30 +21,35 @@ const intercept = (interceptMapKey: string, response: RouteHandler) => {
 };
 
 describe("Weather app", () => {
-  it("Displays the title", () => {
+  beforeEach(() => {
     cy.visitApp(localAppUrl);
-    cy.contains("Weather App");
-  });
-
-  it("Displays a welcome message on initial load", () => {
-    cy.visitApp(localAppUrl);
-    cy.contains("Welcome to Weather App! Start by searching for a city.");
-  });
-
-  it("Does not show the no search results found message on initial load", () => {
-    cy.visitApp(localAppUrl);
-    cy.get('[data-testid="no-search-results-message"]').should("not.exist");
-  });
-
-  it("Displays search results", () => {
-    const searchCity = "Seattle";
 
     intercept("GEO", {
       statusCode: 200,
       body: searchResults,
     });
 
-    cy.visitApp(localAppUrl);
+    intercept("WEATHER", {
+      statusCode: 200,
+      body: weather,
+    });
+  });
+
+  it("Displays the title", () => {
+    cy.contains("Weather App");
+  });
+
+  it("Displays a welcome message on initial load", () => {
+    cy.contains("Welcome to Weather App! Start by searching for a city.");
+  });
+
+  it("Does not show the no search results found message on initial load", () => {
+    cy.get('[data-testid="no-search-results-message"]').should("not.exist");
+  });
+
+  it("Displays search results", () => {
+    const searchCity = "Seattle";
+
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -63,7 +68,6 @@ describe("Weather app", () => {
       body: [],
     });
 
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.contains("Sorry, but we could not find that city.");
@@ -72,12 +76,6 @@ describe("Weather app", () => {
   it("Does not show the welcome message after a search is performed", () => {
     const searchCity = "Seattle";
 
-    intercept("GEO", {
-      statusCode: 200,
-      body: searchResults,
-    });
-
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="welcome-message"]').should("not.exist");
@@ -86,17 +84,6 @@ describe("Weather app", () => {
   it("Can favorite multiple cities", () => {
     const searchCity = "Seattle";
 
-    intercept("GEO", {
-      statusCode: 200,
-      body: searchResults,
-    });
-
-    intercept("WEATHER", {
-      statusCode: 200,
-      body: weather,
-    });
-
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -110,17 +97,6 @@ describe("Weather app", () => {
   it("Does not allow favoriting of the same city twice", () => {
     const searchCity = "Seattle";
 
-    intercept("GEO", {
-      statusCode: 200,
-      body: searchResults,
-    });
-
-    intercept("WEATHER", {
-      statusCode: 200,
-      body: weather,
-    });
-
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
 
@@ -143,17 +119,6 @@ describe("Weather app", () => {
   it("Displays the rounded temperature for a favorite", () => {
     const searchCity = "Seattle";
 
-    intercept("GEO", {
-      statusCode: 200,
-      body: searchResults,
-    });
-
-    intercept("WEATHER", {
-      statusCode: 200,
-      body: weather,
-    });
-
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
@@ -163,17 +128,11 @@ describe("Weather app", () => {
   it("Displays N/A for the temp when it can't be retrieved", () => {
     const searchCity = "Seattle";
 
-    intercept("GEO", {
-      statusCode: 200,
-      body: searchResults,
-    });
-
     intercept("WEATHER", {
       statusCode: 200,
       body: null,
     });
 
-    cy.visitApp(localAppUrl);
     cy.get('[data-testid="search-input"]').type(searchCity);
     cy.get('[data-testid="search-input"]').type("{enter}");
     cy.get('[data-testid="add-favorite"]').eq(0).click();
