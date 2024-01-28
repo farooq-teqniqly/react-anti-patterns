@@ -7,16 +7,14 @@ import {
   AppSearchResult,
   mapAppSearchResultToFavoriteCity,
 } from "../types/types";
+import { useEndpoints } from "./useEndpoints";
 
 const useFavoriteCity = () => {
-  const getWeatherEndpoint = (lat: number, lon: number): string => {
-    return `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
-  };
-
   const [favoriteCities, setFavoriteCities] = useState<FavoriteCity[]>([]);
+  const { weatherEndpoint } = useEndpoints();
 
   const fetchWeather = async (city: FavoriteCity): Promise<Weather> => {
-    const response = await fetch(getWeatherEndpoint(city.lat, city.long));
+    const response = await fetch(weatherEndpoint(city.lat, city.long));
     const remoteWeather: RemoteWeather = await response.json();
     return mapRemoteWeather(remoteWeather);
   };
