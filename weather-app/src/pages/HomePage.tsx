@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, KeyboardEvent } from "react";
+import { ChangeEvent, useState, KeyboardEvent, useEffect } from "react";
 import {
   AppSearchResult,
   RemoteSearchResult,
@@ -11,30 +11,25 @@ import {
 } from "../types/types";
 import SearchResultCard from "../components/SearchResultCard";
 import FavoriteCityCard from "../components/FavoriteCityCard";
+import { useSearchCity } from "../hooks/useSearchCity";
 
-const getSearchEndpoint = (city: string): string => {
-  return `https://api.openweathermap.org/geo/1.0/direct?q='${city}'&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
-};
+// const getSearchEndpoint = (city: string): string => {
+//   return `https://api.openweathermap.org/geo/1.0/direct?q='${city}'&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
+// };
 
 const getWeatherEndpoint = (lat: number, lon: number): string => {
   return `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`;
 };
 
 const HomePage = () => {
-  const [searchCity, setSearchCity] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<AppSearchResult[]>([]);
   const [showNoSearchResultsMessage, setShowNoSearchResultsMessage] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(true);
   const [favoriteCities, setFavoriteCities] = useState<FavoriteCity[]>([]);
+  const { fetchSearchResults, setSearchCity, searchResults } = useSearchCity();
 
-  const fetchSearchResults = async () => {
-    const response = await fetch(getSearchEndpoint(searchCity));
-    const cities: RemoteSearchResult[] = await response.json();
-
-    setSearchResults(mapRemoteSearchResults(cities));
-    setShowNoSearchResultsMessage(cities.length === 0);
-    setShowWelcomeMessage(false);
-  };
+  useEffect(() => {
+    setShowNoSearchResultsMessage(searchResults.length === 0 && !showWelcomeMessage);
+  }, [searchResults, showWelcomeMessage]);
 
   const fetchWeather = async (city: FavoriteCity): Promise<Weather> => {
     const response = await fetch(getWeatherEndpoint(city.lat, city.long));
@@ -69,6 +64,7 @@ const HomePage = () => {
     }
 
     fetchSearchResults();
+    setShowWelcomeMessage(false);
   };
 
   return (

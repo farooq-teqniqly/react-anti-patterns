@@ -59,6 +59,14 @@ describe("Weather app", () => {
     });
   });
 
+  it("Does not show no results found message when there are results", () => {
+    const searchCity = "Seattle";
+
+    cy.searchCity(searchCity);
+
+    cy.get('[data-testid="no-search-results-message"]').should("not.exist");
+  });
+
   it("Displays a not found message when the city isn't found", () => {
     const searchCity = "Balhblahblah";
 
