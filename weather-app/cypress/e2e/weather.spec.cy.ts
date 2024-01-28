@@ -94,17 +94,7 @@ describe("Weather app", () => {
     const searchCity = "Seattle";
 
     cy.searchCity(searchCity);
-
-    cy.addFavorite(0)
-      .then(() => {
-        return cy.wait(1000);
-      })
-      .then(() => {
-        return cy.addFavorite(0);
-      })
-      .then(() => {
-        return cy.wait(1000);
-      });
+    cy.addFavorite(0);
 
     cy.get('[data-testid="favorite-city"]').should("have.length", 1);
   });
