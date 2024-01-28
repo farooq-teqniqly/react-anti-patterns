@@ -84,7 +84,7 @@ describe("Weather app", () => {
     cy.searchCity(searchCity);
 
     searchResults.forEach((r, index) => {
-      cy.get('[data-testid="add-favorite"]').eq(index).click();
+      cy.addFavorite(index);
     });
 
     cy.get('[data-testid="favorite-city"]').should("have.length", 3);
@@ -95,14 +95,12 @@ describe("Weather app", () => {
 
     cy.searchCity(searchCity);
 
-    cy.get('[data-testid="add-favorite"]')
-      .eq(0)
-      .click()
+    cy.addFavorite(0)
       .then(() => {
         return cy.wait(1000);
       })
       .then(() => {
-        return cy.get('[data-testid="add-favorite"]').eq(0).click();
+        return cy.addFavorite(0);
       })
       .then(() => {
         return cy.wait(1000);
@@ -115,7 +113,7 @@ describe("Weather app", () => {
     const searchCity = "Seattle";
 
     cy.searchCity(searchCity);
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.addFavorite(0);
     cy.contains(/^48$/);
   });
 
@@ -128,7 +126,7 @@ describe("Weather app", () => {
     });
 
     cy.searchCity(searchCity);
-    cy.get('[data-testid="add-favorite"]').eq(0).click();
+    cy.addFavorite(0);
     cy.contains("N/A");
   });
 });
